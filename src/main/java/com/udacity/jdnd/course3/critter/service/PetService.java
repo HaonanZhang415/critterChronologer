@@ -7,12 +7,14 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class PetService {
 
     @Autowired
@@ -39,6 +41,11 @@ public class PetService {
         pets.add(savedPet);
         customer.setPets(pets);
         customerRepository.save(customer);
+        return savedPet.getId();
+    }
+
+    public Long savePet(Pet pet) {
+        Pet savedPet = petRepository.save(pet);
         return savedPet.getId();
     }
 

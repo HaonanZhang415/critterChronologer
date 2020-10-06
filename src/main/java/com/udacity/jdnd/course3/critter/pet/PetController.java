@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,8 +24,14 @@ public class PetController {
 
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        Long id = petService.savePet(convertPetDTOToPetEntity(petDTO), petDTO.getOwnerId());
-        petDTO.setId(id);
+        if (Objects.isNull(petDTO.getOwnerId())) {
+            Long id = petService.savePet(convertPetDTOToPetEntity(petDTO), petDTO.getOwnerId());
+            petDTO.setId(id);
+        }
+        else {
+            Long id = petService.savePet(convertPetDTOToPetEntity(petDTO));
+            petDTO.setId(id);
+        }
         return petDTO;
     }
 
