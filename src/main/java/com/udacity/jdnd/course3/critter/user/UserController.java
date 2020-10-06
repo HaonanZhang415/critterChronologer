@@ -91,22 +91,27 @@ public class UserController {
     private Employee convertEmployeeDTOToEmployeeEntity(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setEmployeeSkills(employeeDTO.getSkills());
+        employee.setWorkDays(employeeDTO.getDaysAvailable());
         return employee;
     }
 
     private CustomerDTO convertCustomerEntityToCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
-        List<Long> petIds = new ArrayList<>();
-        for (Pet pet : customer.getPets()) {
-            petIds.add(pet.getId());
+        if (customer.getPets() != null) {
+            List<Long> petIds = new ArrayList<>();
+            for (Pet pet : customer.getPets()) {
+                petIds.add(pet.getId());
+            }
+            customerDTO.setPetIds(petIds);
         }
-        customerDTO.setPetIds(petIds);
         return customerDTO;
     }
 
     private List<CustomerDTO> covertCustomerEntityToCustomerDTOForList(List<Customer> customers) {
         List<CustomerDTO> customerDTOs = new ArrayList<>();
+
         for (Customer customer : customers) {
             customerDTOs.add(convertCustomerEntityToCustomerDTO(customer));
         }
@@ -116,6 +121,7 @@ public class UserController {
     private EmployeeDTO convertEmployeeEntityToEmployeeDTO(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         BeanUtils.copyProperties(employee, employeeDTO);
+        employeeDTO.setDaysAvailable(employee.getWorkDays());
         return employeeDTO;
     }
 

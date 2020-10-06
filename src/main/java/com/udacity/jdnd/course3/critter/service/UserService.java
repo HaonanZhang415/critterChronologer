@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -60,8 +57,15 @@ public class UserService {
     public List<Employee> findEmployeeForService(Set<EmployeeSkill> skillsRequired, LocalDate dateRequired) {
 
         DayOfWeek dayOfWeek = dateRequired.getDayOfWeek();
-        Set<DayOfWeek> dayOfWeeks = new HashSet<>();
-        dayOfWeeks.add(dayOfWeek);
-        return employeeRepository.findByEmployeeSkillsInAndWorkDaysIn(skillsRequired, dayOfWeeks);
+        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> selectedEmployees = new ArrayList<>();
+        for (Employee employee : employees) {
+            if (employee.getEmployeeSkills() != null && employee.getWorkDays() != null) {
+                if (employee.getEmployeeSkills().containsAll(skillsRequired) && employee.getWorkDays().contains(dayOfWeek)) {
+                    selectedEmployees.add(employee);
+                }
+            }
+        }
+        return selectedEmployees;
     }
 }

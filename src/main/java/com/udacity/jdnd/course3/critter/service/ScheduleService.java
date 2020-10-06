@@ -27,8 +27,28 @@ public class ScheduleService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PetService petService;
 
-    public Long saveSchedule(Schedule schedule) {
+    public Long saveSchedule(Schedule schedule, List<Long> employeeIds, List<Long> petIds) {
+        List<Employee> employeeList = new ArrayList<>();
+        List<Pet> petList = new ArrayList<>();
+        if (employeeIds != null) {
+            for (Long employeeId : employeeIds) {
+                employeeList.add(userService.findEmployeeById(employeeId));
+            }
+        }
+        schedule.setEmployees(employeeList);
+
+        if (petIds != null) {
+            for (Long petId : petIds) {
+                petList.add(petService.findPetById(petId));
+            }
+        }
+        schedule.setPets(petList);
+
         return scheduleRepository.save(schedule).getId();
     }
 

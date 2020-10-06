@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.entity;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -12,11 +13,13 @@ import java.util.Set;
 @Entity
 public class Employee extends User {
 
-    @ElementCollection
+    @Column
+    @ElementCollection(targetClass=EmployeeSkill.class)
     private Set<EmployeeSkill> employeeSkills;
-    @ElementCollection
+    @Column
+    @ElementCollection(targetClass=DayOfWeek.class)
     private Set<DayOfWeek> workDays;
-    @ManyToMany
+    @ManyToMany(mappedBy = "employees")
     private List<Schedule> schedules;
 
     public Set<EmployeeSkill> getEmployeeSkills() {

@@ -15,11 +15,19 @@ public class Schedule {
     private Long id;
     private LocalDate date;
     @ElementCollection
-    private List<EmployeeSkill> activities;
+    private Set<EmployeeSkill> activities;
 
     @ManyToMany
+    @JoinTable(
+            name = "schedule_employee",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
     @ManyToMany
+    @JoinTable(
+            name = "schedule_pet",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "pet_id"))
     private List<Pet> pets;
 
     public Long getId() {
@@ -54,11 +62,11 @@ public class Schedule {
         this.date = date;
     }
 
-    public List<EmployeeSkill> getActivities() {
+    public Set<EmployeeSkill> getActivities() {
         return activities;
     }
 
-    public void setActivities(List<EmployeeSkill> activities) {
+    public void setActivities(Set<EmployeeSkill> activities) {
         this.activities = activities;
     }
 }

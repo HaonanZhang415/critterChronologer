@@ -49,6 +49,6 @@ public class PetService {
     public List<Pet> findAllPetsByCustomer(long ownerId) {
         Optional<Customer> customerResponse = customerRepository.findById(ownerId);
         Customer customer = customerResponse.get();
-        return petRepository.findPetsByOwnerId(customer.getId());
+        return petRepository.findByCustomer(customer);
     }
 }

@@ -44,6 +44,7 @@ public class PetController {
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
 
         List<Pet> pets = petService.findAllPetsByCustomer(ownerId);
+        System.out.println(pets.size());
         return convertPetEntityToPetDTOForList(pets);
     }
 
@@ -66,6 +67,7 @@ public class PetController {
         for (Pet pet : pets) {
             petDTOs.add(convertPetEntityToPetDTO(pet));
         }
+        System.out.println(petDTOs.size());
         return petDTOs;
     }
 }

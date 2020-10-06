@@ -1,5 +1,7 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +23,7 @@ public class ScheduleController {
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        Long id = scheduleService.saveSchedule(convertScheduleDTOToScheduleEntity(scheduleDTO));
+        Long id = scheduleService.saveSchedule(convertScheduleDTOToScheduleEntity(scheduleDTO), scheduleDTO.getEmployeeIds(), scheduleDTO.getPetIds());
         scheduleDTO.setId(id);
         return scheduleDTO;
     }
@@ -60,6 +62,22 @@ public class ScheduleController {
     private ScheduleDTO convertScheduleEntityToScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(schedule, scheduleDTO);
+        //scheduleDTO.setActivities(schedule.getActivities());
+        if (schedule.getEmployees() != null) {
+            List<Long> employeeIds = new ArrayList<>();
+            for (Employee employee : schedule.getEmployees()) {
+                employeeIds.add(employee.getId());
+            }
+            scheduleDTO.setEmployeeIds(employeeIds);
+        }
+        if (schedule.getPets() != null) {
+            List<Long> petIds = new ArrayList<>();
+            for (Pet pet : schedule.getPets()) {
+                petIds.add(pet.getId());
+            }
+            scheduleDTO.setPetIds(petIds);
+        }
+
         return scheduleDTO;
     }
 

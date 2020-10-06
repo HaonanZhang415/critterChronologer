@@ -22,7 +22,7 @@ public class Pet {
     private Customer customer;
     private LocalDate birthDate;
     private String notes;
-    @ManyToMany
+    @ManyToMany(mappedBy = "pets")
     private List<Schedule> schedules;
 
     public Long getId() {
